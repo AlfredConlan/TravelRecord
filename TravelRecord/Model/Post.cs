@@ -1,17 +1,15 @@
-﻿using SQLite;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
+using TravelRecord.Helpers;
 
 namespace TravelRecord.Model
 {
     public class Post
     {
-        [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
-        [MaxLength(250)]
         public string Experience { get; set; }
-
         public string VenueName { get; set; }
         public string CategoryId { get; set; }
         public string CategoryName { get; set; }
@@ -20,9 +18,5 @@ namespace TravelRecord.Model
         public string Address { get; set; }
         public int Distance { get; set; }
 
-        //public static implicit operator Post(Post v)
-        //{
-        //    throw new NotImplementedException();
-        //}
     }
 }
