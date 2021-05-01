@@ -24,7 +24,7 @@ namespace TravelRecord
 
             using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
             {
-                var postTable = conn.Table<Post>().ToList();
+                var postTable = conn.Table<Visited>().ToList();
 
                 postCountLabel.Text = postTable.Count.ToString();
             }

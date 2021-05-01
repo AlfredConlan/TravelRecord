@@ -37,7 +37,7 @@ namespace TravelRecord
             {
                 var selectedVenue = venueListView.SelectedItem as Venue;
                 var firstCategory = selectedVenue.categories.FirstOrDefault();
-                Post post = new Post()
+                Visited post = new Visited()
                 {
                     Experience = experienceEntry.Text,
                     CategoryId = firstCategory.id,
@@ -49,24 +49,8 @@ namespace TravelRecord
                     VenueName = selectedVenue.name
                 };
 
-                var savePost = await PostLogic.SavePost(post.Experience, post.VenueName, post.CategoryId, post.CategoryName, post.Latitude.ToString(), post.Longitude.ToString(), post.Address, post.Distance.ToString());
-
-                //using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
-                //{
-                //    conn.CreateTable<Post>();
-                //    int rows = conn.Insert(post);
-                //    if (rows > 0)
-                //    {
-                //        DisplayAlert("Success", "Experience successfully inserted", "Ok");
-                //        Navigation.PushAsync(new HistoryPage());
-                //    }
-                //    else
-                //    {
-                //        DisplayAlert("Failure", "Experience failed to be inserted", "Ok");
-                //    }
-                //};
-
-
+                var savePost = await VisitedLogic.SavePost(post.Experience, post.VenueName, post.CategoryId, post.CategoryName, post.Latitude.ToString(), post.Longitude.ToString(), post.Address, post.Distance.ToString());
+                await Navigation.PushAsync(new HistoryPage());
             }
             catch (NullReferenceException nre)
             {

@@ -6,7 +6,7 @@ using TravelRecord.Helpers;
 
 namespace TravelRecord.Model
 {
-    public class Post
+    public class Visited
     {
         public int Id { get; set; }
         public string Experience { get; set; }

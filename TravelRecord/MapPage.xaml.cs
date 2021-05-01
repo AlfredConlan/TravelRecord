@@ -76,15 +76,15 @@ namespace TravelRecord
 
             using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
             {
-                conn.CreateTable<Post>();
-                var posts = conn.Table<Post>().ToList();
+                conn.CreateTable<Visited>();
+                var posts = conn.Table<Visited>().ToList();
 
                 DisplayInMap(posts);
             }
 
         }
 
-        private void DisplayInMap(List<Post> posts)
+        private void DisplayInMap(List<Visited> posts)
         {
             foreach (var post in posts)
             {
