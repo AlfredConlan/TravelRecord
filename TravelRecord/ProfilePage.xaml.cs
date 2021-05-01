@@ -1,10 +1,4 @@
-﻿using SQLite;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TravelRecord.Model;
+﻿using TravelRecord.Model;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -20,14 +14,14 @@ namespace TravelRecord
 
         protected override void OnAppearing()
         {
-            base.OnAppearing();
+            //base.OnAppearing();
 
-            using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
-            {
-                var postTable = conn.Table<Visited>().ToList();
+            //using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
+            //{
+            //    var postTable = conn.Table<Visited>().ToList();
 
-                postCountLabel.Text = postTable.Count.ToString();
-            }
+            //    postCountLabel.Text = postTable.Count.ToString();
+            //}
         }
     }
 }

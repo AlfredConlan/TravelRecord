@@ -2,12 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Text;
 using System.Threading.Tasks;
 using TravelRecord.Model;
-using static TravelRecord.Model.Visited;
 
 namespace TravelRecord.Logic
 {
@@ -22,25 +19,24 @@ namespace TravelRecord.Logic
                                                     string address,
                                                     string distance)
         {
-            using (var httpClient = new HttpClient())
+            using var httpClient = new HttpClient();
+            using var request = new HttpRequestMessage(new HttpMethod("POST"), "https://travelrecordwebapi.azurewebsites.net/api/Posts");
+
+            var post = new Visited
             {
-                using (var request = new HttpRequestMessage(new HttpMethod("POST"), "https://travelrecordwebapi.azurewebsites.net/api/Posts"))
-                {
-                    var post = new Visited();
-                    post.Experience = experience;
-                    post.VenueName = venuename;
-                    post.CategoryId = categoryid;
-                    post.CategoryName = categoryname;
-                    post.Latitude = Convert.ToDouble(latitude);
-                    post.Longitude = Convert.ToDouble(longitude);
-                    post.Address = address;
-                    post.Distance = Convert.ToInt32(distance);
+                Experience = experience,
+                VenueName = venuename,
+                CategoryId = categoryid,
+                CategoryName = categoryname,
+                Latitude = Convert.ToDouble(latitude),
+                Longitude = Convert.ToDouble(longitude),
+                Address = address,
+                Distance = Convert.ToInt32(distance)
+            };
 
-                    var response = await httpClient.PostAsJsonAsync(request.RequestUri, post);
+            var response = await httpClient.PostAsJsonAsync(request.RequestUri, post);
 
-                    return response.ToString();
-                }
-            }
+            return response.ToString();
         }
 
 
@@ -48,25 +44,23 @@ namespace TravelRecord.Logic
         {
             List<Visited> post = new List<Visited>();
 
-            using (var httpClient = new HttpClient())
+            using var httpClient = new HttpClient();
+
+            using var request = new HttpRequestMessage(new HttpMethod("GET"), "https://travelrecordwebapi.azurewebsites.net/api/Posts");
+
+            HttpResponseMessage response = await httpClient.GetAsync(request.RequestUri);
+
+            if (response.IsSuccessStatusCode)
             {
-                using (var request = new HttpRequestMessage(new HttpMethod("GET"), "https://travelrecordwebapi.azurewebsites.net/api/Posts"))
-                {
-                    HttpResponseMessage response = await httpClient.GetAsync(request.RequestUri);
+                var json = await response.Content.ReadAsStringAsync();
 
-                    if (response.IsSuccessStatusCode)
-                    {
-                        var json = await response.Content.ReadAsStringAsync();
+                var postRoot = JsonConvert.DeserializeObject<List<TravelRecord.Model.Visited>>(json);
 
-                        var postRoot = JsonConvert.DeserializeObject<List<TravelRecord.Model.Visited>>(json);
-
-                        return post = postRoot as List<Visited>;
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                }
+                return post = postRoot as List<Visited>;
+            }
+            else
+            {
+                return null;
             }
         }
 

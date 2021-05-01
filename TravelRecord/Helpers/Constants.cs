@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace TravelRecord.Helpers
+﻿namespace TravelRecord.Helpers
 {
     public class Constants
     {

@@ -1,16 +1,13 @@
-﻿using Plugin.Permissions;
+﻿using Plugin.Geolocator;
+using Plugin.Geolocator.Abstractions;
+using Plugin.Permissions;
 using Plugin.Permissions.Abstractions;
-using Plugin.Geolocator;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using TravelRecord.Logic;
+using TravelRecord.Model;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using Plugin.Geolocator.Abstractions;
-using SQLite;
-using TravelRecord.Model;
 
 namespace TravelRecord
 {
@@ -29,14 +26,18 @@ namespace TravelRecord
         {
             try
             {
+#pragma warning disable CS0618 // Type or member is obsolete
                 var status = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.LocationWhenInUse);
+#pragma warning restore CS0618 // Type or member is obsolete
                 if (status != PermissionStatus.Granted)
                 {
                     if (await CrossPermissions.Current.ShouldShowRequestPermissionRationaleAsync(Permission.LocationWhenInUse))
                     {
                         await DisplayAlert("Location Needed", "We need to access your location", "Ok");
                     }
+#pragma warning disable CS0618 // Type or member is obsolete
                     var result = await CrossPermissions.Current.RequestPermissionsAsync(Permission.LocationWhenInUse);
+#pragma warning restore CS0618 // Type or member is obsolete
                     if (result.ContainsKey(Permission.LocationWhenInUse))
                     {
                         status = result[Permission.LocationWhenInUse];
@@ -74,14 +75,9 @@ namespace TravelRecord
 
             GetLocation();
 
-            using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
-            {
-                conn.CreateTable<Visited>();
-                var posts = conn.Table<Visited>().ToList();
+            var results = await VisitedLogic.RetrievePost();
 
-                DisplayInMap(posts);
-            }
-
+            DisplayInMap(results);
         }
 
         private void DisplayInMap(List<Visited> posts)
@@ -102,8 +98,14 @@ namespace TravelRecord
 
                     locationsMap.Pins.Add(pin);
                 }
-                catch (NullReferenceException nre) { }
-                catch (Exception ex) { }
+                catch (NullReferenceException nre) 
+                {
+                    DisplayAlert("Error", nre.Message, "Ok");
+                }
+                catch (Exception ex) 
+                {
+                    DisplayAlert("Error", ex.Message, "Ok");
+                }
             }
         }
 

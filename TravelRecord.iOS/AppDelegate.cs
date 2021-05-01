@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Foundation;
 using System.IO;
-using System.Linq;
-
-using Foundation;
 using UIKit;
 
 namespace TravelRecord.iOS

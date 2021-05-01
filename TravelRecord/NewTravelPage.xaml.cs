@@ -1,10 +1,6 @@
 ﻿using Plugin.Geolocator;
-using SQLite;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TravelRecord.Logic;
 using TravelRecord.Model;
 using Xamarin.Forms;

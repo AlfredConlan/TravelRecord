@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using TravelRecord.Helpers;
-
-namespace TravelRecord.Model
+﻿namespace TravelRecord.Model
 {
     public class Visited
     {
